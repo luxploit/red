@@ -57,14 +57,16 @@ func (c *Container) invokeWithDeps(fn reflect.Value) ([]reflect.Value, error) {
 				return nil, fmt.Errorf("missing dependency of type %v", argType)
 			}
 
-			instance, err := c.invokeProvider(provider)
+			newInstance, err := c.invokeProvider(provider)
 			if err != nil {
 				return nil, fmt.Errorf("failed to invoke provider for %v: %w", argType, err)
 			}
 
 			c.mu.Lock()
-			c.instances[argType] = instance
+			c.instances[argType] = newInstance
 			c.mu.Unlock()
+
+			instance = newInstance
 		}
 
 		args[i] = instance
