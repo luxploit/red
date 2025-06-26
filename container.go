@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-func (c *Container) Provide(provider any) error {
+func (c *Container) provide(provider any) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -29,7 +29,7 @@ func (c *Container) Provide(provider any) error {
 	return nil
 }
 
-func (c *Container) Invoke(fn any) error {
+func (c *Container) invoke(fn any) error {
 	val := reflect.ValueOf(fn)
 
 	args, err := c.invokeWithDeps(val)
