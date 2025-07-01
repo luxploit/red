@@ -32,12 +32,14 @@ func main() {
 
 ```go
 func AwaitInterrupt(log *log.Logger) error {
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	if sig := <-c; sig != nil {
-		log.Info("Lifecycle", "Captured %v! Stopping Server...", sig)
-		os.Exit(0)
-	}
+	go func() {
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+		if sig := <-c; sig != nil {
+			log.Info("Lifecycle", "Captured %v! Stopping Server...", sig)
+			os.Exit(0)
+		}
+	}()
 
 	return nil
 }
