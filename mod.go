@@ -5,11 +5,23 @@ import (
 	"sync"
 )
 
+type TaskType int
+
+const (
+	TaskType_Provide = TaskType(iota)
+	TaskType_Invoke
+)
+
+type Task struct {
+	typ TaskType
+	fn  func(*Container) error
+}
+
 type Container struct {
 	mu        sync.RWMutex
 	instances map[reflect.Type]reflect.Value
 	providers map[reflect.Type]reflect.Value
-	tasks     []func(*Container) error
+	tasks     []Task
 }
 
 func New() *Container {
