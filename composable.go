@@ -25,7 +25,7 @@ func (c *Container) Run() error {
 		}
 	}
 
-	if err, ok := <-dieCh; err != nil && ok {
+	if err := <-dieCh; err != nil {
 		return err
 	}
 
