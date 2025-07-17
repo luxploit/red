@@ -19,7 +19,7 @@ func main() {
 	    red.Provide(settings.New),
 	    red.Provide(log.New),
 	    red.Invoke(lifecycle.AwaitInterrupt),
-	    red.Invoke(server.ListenHTTP), 
+	    red.Invoke(server.ListenHTTP),
     )
 
     if err := app.Run(); err != nil {
@@ -32,14 +32,12 @@ func main() {
 
 ```go
 func AwaitInterrupt(log *log.Logger) error {
-	go func() {
-		c := make(chan os.Signal, 1)
-		signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-		if sig := <-c; sig != nil {
-			log.Info("Lifecycle", "Captured %v! Stopping Server...", sig)
-			os.Exit(0)
-		}
-	}()
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	if sig := <-c; sig != nil {
+		log.Info("Lifecycle", "Captured %v! Stopping Server...", sig)
+		os.Exit(0)
+	}
 
 	return nil
 }
