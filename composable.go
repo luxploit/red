@@ -1,24 +1,13 @@
 package red
 
-import "sync"
-
 func (c *Container) Use(steps ...Task) *Container {
 	c.tasks = append(c.tasks, steps...)
 	return c
 }
 
 func (c *Container) Run() error {
-	wg := sync.WaitGroup{}
 
-	//! This is terrible but such is life
-
-	invTasks := 0
-	for _, task := range c.tasks {
-		if task.typ == TaskType_Invoke {
-			invTasks++
-		}
-	}
-	invErrs := make(chan error, invTasks)
+	dieCh := make(chan error)
 
 	for _, task := range c.tasks {
 
@@ -28,23 +17,16 @@ func (c *Container) Run() error {
 				return err
 			}
 		case TaskType_Invoke:
-			wg.Add(1)
 			go func(task func(*Container) error) {
-				defer wg.Done()
 				if err := task(c); err != nil {
-					invErrs <- err
+					dieCh <- err
 				}
 			}(task.fn)
 		}
 	}
 
-	wg.Wait()
-	close(invErrs)
-
-	for err := range invErrs {
-		if err != nil {
-			return err
-		}
+	if err, ok := <-dieCh; err != nil && ok {
+		return err
 	}
 
 	return nil
