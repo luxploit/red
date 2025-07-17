@@ -32,10 +32,13 @@ func (c *Container) provide(provider any) error {
 func (c *Container) invoke(fn any) error {
 	val := reflect.ValueOf(fn)
 
+	c.im.Lock()
 	args, err := c.invokeWithDeps(val)
 	if err != nil {
 		return fmt.Errorf("red: %w", err)
 	}
+	c.im.Unlock()
+
 	val.Call(args)
 	return nil
 }

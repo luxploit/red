@@ -19,6 +19,7 @@ type Task struct {
 
 type Container struct {
 	mu        sync.RWMutex
+	im        sync.RWMutex
 	instances map[reflect.Type]reflect.Value
 	providers map[reflect.Type]reflect.Value
 	tasks     []Task
