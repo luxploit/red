@@ -39,7 +39,11 @@ func (c *Container) invoke(fn any) error {
 	}
 	c.im.Unlock()
 
-	val.Call(args)
+	results := val.Call(args)
+	if !results[0].IsNil() {
+		return results[0].Interface().(error)
+	}
+
 	return nil
 }
 
