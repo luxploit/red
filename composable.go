@@ -52,6 +52,6 @@ func Invoke(fn any) Task {
 
 func Locate[T any]() (*T, error) {
 	var service *T
-	err := instance.Locate(service)
+	err := instance.Locate(&service)
 	return service, err
 }
