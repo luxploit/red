@@ -72,7 +72,7 @@ func (c *Container) Locate(target any) error {
 		return nil
 	}
 
-	return errors.New("no instance or provider found")
+	return errors.New("red: no instance or provider found")
 }
 
 // invokeProvider executes a provider function and checks for returned error

@@ -25,7 +25,18 @@ type Container struct {
 	tasks     []Task
 }
 
+var instance *Container
+
 func New() *Container {
+	instance = &Container{
+		instances: make(map[reflect.Type]reflect.Value),
+		providers: make(map[reflect.Type]reflect.Value),
+	}
+
+	return instance
+}
+
+func NewStandalone() *Container {
 	return &Container{
 		instances: make(map[reflect.Type]reflect.Value),
 		providers: make(map[reflect.Type]reflect.Value),

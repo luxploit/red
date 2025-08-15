@@ -49,3 +49,9 @@ func Invoke(fn any) Task {
 		typ: TaskType_Invoke,
 	}
 }
+
+func Locate[T any]() (*T, error) {
+	var service *T
+	err := instance.Locate(service)
+	return service, err
+}

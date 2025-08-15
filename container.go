@@ -41,7 +41,7 @@ func (c *Container) invoke(fn any) error {
 
 	results := val.Call(args)
 	if !results[0].IsNil() {
-		return results[0].Interface().(error)
+		return fmt.Errorf("red: %w", results[0].Interface().(error))
 	}
 
 	return nil
