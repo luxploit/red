@@ -46,9 +46,6 @@ func (c *Container) Register(service any) error {
 }
 
 func (c *Container) Locate(target any) error {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-
 	ptr := reflect.ValueOf(target)
 	if ptr.Kind() != reflect.Ptr || ptr.IsNil() {
 		return errors.New("red: locatable target must be a non-nil pointer")
@@ -62,7 +59,9 @@ func (c *Container) Locate(target any) error {
 	}
 
 	if provider, ok := c.providers[targetType]; ok {
+		c.im.Lock()
 		instance, err := c.invokeProvider(provider)
+		c.im.Unlock()
 		if err != nil {
 			return fmt.Errorf("red: %w", err)
 		}
