@@ -33,14 +33,20 @@ func New() *Container {
 		providers: make(map[reflect.Type]reflect.Value),
 	}
 
+	instance.Use(Provide(contextProvider))
+
 	return instance
 }
 
 func NewStandalone() *Container {
-	return &Container{
+	inst := &Container{
 		instances: make(map[reflect.Type]reflect.Value),
 		providers: make(map[reflect.Type]reflect.Value),
 	}
+
+	inst.Use(Provide(contextProvider))
+
+	return inst
 }
 
 func containsError(typ reflect.Type) bool {
