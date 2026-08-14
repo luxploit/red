@@ -32,6 +32,10 @@ func (c *Container) Run() error {
 	return nil
 }
 
+func Prepare(prep any) Task {
+	return Invoke(prep)
+}
+
 func Provide(provider any) Task {
 	return Task{
 		fn: func(c *Container) error {
@@ -48,10 +52,4 @@ func Invoke(fn any) Task {
 		},
 		typ: TaskType_Invoke,
 	}
-}
-
-func Locate[T any]() (*T, error) {
-	var service *T
-	err := instance.Locate(&service)
-	return service, err
 }

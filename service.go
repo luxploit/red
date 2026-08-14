@@ -6,6 +6,12 @@ import (
 	"reflect"
 )
 
+func Locate[T any]() (*T, error) {
+	var service *T
+	err := instance.Locate(&service)
+	return service, err
+}
+
 func (c *Container) Register(service any) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
