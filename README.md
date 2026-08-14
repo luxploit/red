@@ -7,7 +7,7 @@
 
 `red` is a Golang v1.24+ library is an _experimental_ DI/Dependency Injection framework, designed to help in the creation of microservices.
 
-To install, just run `go get -u github.com/luxploit/red`
+To install, just run `go get -u github.com/luxploit/red@v0.4.2`
 
 ### Example Usage (DI Container)
 
@@ -28,7 +28,7 @@ func main() {
 }
 ```
 
-**NOTE:** `red` does is not responsible for keeping the program alive after calling `app.Run()`, unless you have exisiting code listening for an interrupt, you can use a function like this as an `red.Invoke` handler to handle it:
+**NOTE:** `red` is not responsible for keeping the program alive after calling `app.Run()`, unless you have exisiting code listening for an interrupt, you can use a function like this as an `red.Invoke` handler to handle it:
 
 ```go
 func AwaitInterrupt(log *log.Logger) error {
