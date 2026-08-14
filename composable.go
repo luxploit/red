@@ -22,6 +22,10 @@ func (c *Container) Run() error {
 					dieCh <- err
 				}
 			}(task.fn)
+		case TaskType_Prepare:
+			if err := task.fn(c); err != nil {
+				return err
+			}
 		}
 	}
 
@@ -33,7 +37,12 @@ func (c *Container) Run() error {
 }
 
 func Prepare(prep any) Task {
-	return Invoke(prep)
+	return Task{
+		fn: func(c *Container) error {
+			return c.invoke(prep)
+		},
+		typ: TaskType_Prepare,
+	}
 }
 
 func Provide(provider any) Task {

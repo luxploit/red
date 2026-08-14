@@ -10,6 +10,7 @@ type TaskType int
 const (
 	TaskType_Provide = TaskType(iota)
 	TaskType_Invoke
+	TaskType_Prepare
 )
 
 type Task struct {
